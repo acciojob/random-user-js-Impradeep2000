@@ -1,61 +1,52 @@
-let obj;
+let main=document.querySelector("main");
 
-function fetchAndUpdateUserData() {
-  let p = fetch("https://randomuser.me/api/");
-
-  p.then((response) => {
-    console.log(response.status);
-    console.log(response.ok);
-    return response.json();
-  }).then((value2) => {
-    console.log(value2);
-    obj = value2;
-    // Access the large picture URL from the fetched data
-    let largePictureUrl = value2.results[0].picture.large;
-    let name = value2.results[0].name.first + " " + value2.results[0].name.last;
-
-    // Set the HTML content with the image URL
-    document.getElementById("img").innerHTML = `
-      <img src="${largePictureUrl}" alt="Random User Image"></img>
-    `;
-
-    document.getElementById("name").innerHTML = `
-      ${name}
-    `;
-
-    document.getElementById("display").innerHTML = ""; // Clear previous content
-
-  });
+let getUser=()=>{
+    fetch("https://randomuser.me/api/")
+    .then((res)=>res.json())
+    .then((data)=>displayUser(data.results[0]))
+    .catch((err)=>console.log(err));
 }
+getUser();
 
-fetchAndUpdateUserData();
+let displayUser = (data)=>{
+    console.log(data);
+    main.innerHTML="";
+    let userDiv=document.createElement("div");
+    let img= document.createElement("img");
+    img.src=data.picture.large;
+    let name=document.createElement("p");
+    name.textContent=`${data.name.first} ${data.name.last}`;
+    let additionalInfo=document.createElement("p");
+    additionalInfo.setAttribute("heading","Additional Info");
+    let age=document.createElement("button");
+    age.textContent="Age";
+    age.setAttribute("data-attr","age");
+    let email=document.createElement("button");
+    email.textContent="Email";
+    email.setAttribute("data-attr","email")
+    let phone=document.createElement("button");
+    phone.textContent="Phone";
+    phone.setAttribute("data-attr","phone")
+    let anotherUser=document.createElement("button");
+    anotherUser.setAttribute("id","getUser");
+    anotherUser.textContent="GET ANOTHER USER";
 
-document.querySelector("[data-attr=age]").addEventListener("click", () => {
+    userDiv.append(img,name,additionalInfo,age,email,phone,document.createElement("br"),anotherUser);
+    main.append(userDiv);
 
-  if (obj.results[0].registered) {
-    let age = obj.results[0].registered.age;
-    document.getElementById("display").innerHTML = `
-      Age: ${age}
-    `;
-  } else {
-    
-  }
-});
+    age.addEventListener("click",()=>{
+        additionalInfo.innerHTML=data.dob.age;
+    })
 
-document.querySelector("[data-attr=email]").addEventListener("click", () => {
-  let email = obj.results[0].email;
-  document.getElementById("display").innerHTML = `
-    Email: ${email}
-  `;
-});
+    email.addEventListener("click",()=>{
+        additionalInfo.innerHTML=data.email;
+    })
 
-document.querySelector("[data-attr=phone]").addEventListener("click", () => {
-  let phone = obj.results[0].phone;
-  document.getElementById("display").innerHTML = `
-    Phone: ${phone}
-  `;
-});
+    phone.addEventListener("click",()=>{
+        additionalInfo.innerHTML=data.phone;
+    })
 
-document.getElementById("getUser").addEventListener("click", () => {
-  fetchAndUpdateUserData();
-});
+    anotherUser.addEventListener("click",()=>{
+        getUser();
+    })
+}
