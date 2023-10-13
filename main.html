@@ -4,10 +4,29 @@
 
 <head>
 	<link rel="stylesheet" href="styles.css">
+	<style>
+        .info {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
 	<!-- the entire body must be written by student -->
+	 <h1>Random User</h1>
+    <button id="getUser">Get User</button>
+    <br><br>
+    <img id="userImage" src="" alt="User Image">
+    <h2 id="userName"></h2>
+    <button class="infoButton" data-attr="age">Age</button>
+    <button class="infoButton" data-attr="email">Email</button>
+    <button class="infoButton" data-attr="phone">Phone</button>
+    <div id="additionalInfo">
+        <h3>Additional Info</h3>
+        <p id="ageInfo" class="info"></p>
+        <p id="emailInfo" class="info"></p>
+        <p id="phoneInfo" class="info"></p>
+    </div>
     <script type="text/javascript" src="./script.js">
 </script>
 
